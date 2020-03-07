@@ -91,14 +91,15 @@
       const thisProduct = document.getElementById('.product__header');
       
       /* START: click event listener to trigger */
-      thisProduct.addEventListener('click', function(event){
+      this.addEventListener('click', function(event){
         console.log('clicked');
       
         /* prevent default action for event */
         event.preventDefault();
         
         /* toggle active class on element of thisProduct */
-
+        this.activeProduct.add('active');   
+        
         /* find all active products */
         const activeProduct = document.querySelectorAll('.product .active');
         
@@ -106,11 +107,10 @@
         for(let product of activeProduct) {
           
           /* START: if the active product isn't the element of thisProduct */
-          if (activeProduct != thisProduct);
+          if (activeProduct != this);
           
           /* remove class active for the active product */
           product.activeProduct.remove('.active');
-          
           /* END: if the active product isn't the element of thisProduct */
         }
         /* END LOOP: for each active product */
