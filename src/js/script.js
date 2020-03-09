@@ -88,18 +88,17 @@
       const thisProduct = this;
 
       /* find the clickable trigger (the element that should react to clicking) */
-      const thisProduct = document.getElementById('.product__header');
+      const thisProductClicable = document.getElementById('.product__header');
       
       /* START: click event listener to trigger */
-      this.addEventListener('click', function(event){
+      thisProductClicable.accordionTrigger('click', function(event){
         console.log('clicked');
       
         /* prevent default action for event */
         event.preventDefault();
         
         /* toggle active class on element of thisProduct */
-        this.activeProduct.add('active');   
-        
+        this.activeProduct.add('active');    
         /* find all active products */
         const activeProduct = document.querySelectorAll('.product .active');
         
