@@ -190,6 +190,14 @@
       
       /* END ELSE IF: if option is not selected and option is default */
       }
+      const classImg = document.optionSelected.images.getElementById(classNames.menuProduct.imageVisible);
+     
+      if(optionSelected){
+        optionSelected.images.add(classNames.menuProduct.imageVisible);
+      }
+      else (!optionSelected) {
+        optionSelected.images.remove(classNames.menuProduct.imageVisible);
+      }
     /* END LOOP: for each optionId in param.options */
     }
   /* END LOOP: for each paramId in thisProduct.data.params */
