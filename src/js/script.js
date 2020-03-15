@@ -376,4 +376,8 @@
   };  
 
   app.init();
+<<<<<<< HEAD
 } 
+=======
+} 
+>>>>>>> 241afd78e8fbbedbe1da6705c95f8c8dda979e60
