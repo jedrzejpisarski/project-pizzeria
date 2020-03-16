@@ -226,6 +226,7 @@
           const optionSelected = formData.hasOwnProperty(paramId) && formData[paramId].indexOf(optionId) > -1;
           
           if(optionSelected && !option.default){
+
             /* add price of option to variable price */
             
           /* END IF: if option is selected and option is not default */
@@ -374,9 +375,18 @@
       
       const domElem = thisCart.dom.productList.add(generatedDOM);
     
+      thisCart.products.push(menuProduct);
+      console.log('thisCart.products', thisCart.products);
     }
   }  
 
+  /*class CartProduct{
+    constructor(element, menuProduct){
+      const thisCartProduct = this;
+      
+      thisCartProduct.products 
+    }
+  }*/
   const app = {
     initMenu: function(){
 
