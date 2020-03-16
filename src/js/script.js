@@ -350,6 +350,8 @@
       thisCart.dom.wrapper = element;
 
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      
+      thisCart.dom.productList;
     }
 
     initActions(){
@@ -371,9 +373,7 @@
       const generatedDOM = generatedHTML.menuProduct.html
       
       const domElem = thisCart.dom.productList.add(generatedDOM);
-      
-      /*add element to menu*/
-      menuContainer.appendChild(domElem);
+    
     }
   }  
 
