@@ -116,7 +116,7 @@
 
       console.log('generateHTML', generateHTML)
       /*create element using utilis.createElementFromHTML*/
-      thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+      thisProduct.element = utils.createDOMFromHTML(generateHTML);
       
       /*find menu container*/
       const menuContainer = document.querySelector(selector.containerOf.menu);
@@ -190,6 +190,7 @@
         thisProduct.cartButton.addEventListener('click', function(event){
           event.preventDefault();
           thisProduct.processOrder();
+          addToCart.init();
         });
     }
 
@@ -209,6 +210,8 @@
       const formData = utilis.serializeFormToObject(thisProduct.form);
       console.log('formData', formData);
       
+      thisProduct.params 
+      {}
       /* set variable price to equal thisProduct.data.price */
 
       /* START LOOP: for each paramId in thisProduct.data.params */
@@ -237,6 +240,16 @@
           const classImg = document.optionSelected.images.getElementById(classNames.menuProduct.imageVisible)
         
           if(optionSelected){
+
+            if(thisProduct.params[paramId]){
+              thisProduct.params[paramId] = {
+                label: param.label,
+                options: {},
+              };
+            }
+
+            thisProduct.params[paramId].options[optionId] = option.label;
+
             optionSelected.images.add(classNames.menuProduct.imageVisible);
           }
           else (!optionSelected) {
@@ -247,13 +260,22 @@
         }
       /* END LOOP: for each paramId in thisProduct.data.params */
       }
-      /*multiply price by amount */
-      price *= thisProduct.amount.Widget.value;
-
-      /* set the contents of thisProduct.priceElem to be the value of variable price */
-      thisProduct.priceElem = price;
+       /* multiply price by amount */
+       thisProduct.priceSingle = price;
+       thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
+ 
+       /* set the contents of thisProduct.priceElem to be the value of variable price */
+       thisProduct.priceElem.innerHTML = thisProduct.price;
     }
-  }
+    
+    addToCart(){
+      const thisProduct = this;
+
+      thisProduct.data.name = thisProduct.name;
+      thisProduct.data.amount = thisProduct.amount;
+
+      app.cart.add(thisProduct);
+    }
 
   class AmountWidget{
     constructor(element){
@@ -318,7 +340,7 @@
       thisCart.gestElements(element);
 
       console.log('new Cart', thisCart);
-    },
+    }
 
     getElements(element){
       const thisCart = this;
@@ -328,14 +350,34 @@
       thisCart.dom.wrapper = element;
 
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
-    },
+    }
 
     initActions(){
 
-      thisCart.addEventListener('click', element);
+      const thisCart = this;
+      thisCart.dom.toggleTrigger.addEventListener('click', function());
 
-      this.classNames.cart.wrapperActive.toggle(element);
-    },
+      thisCart.dom.toggleTrigger.toggle(classNames.cart.wrapperActive);
+    }
+
+    add(menuProduct){
+      const thisCart = this;
+
+      console.log('adding product', menuProduct);
+
+      /*generate HTML based on template*/
+      const generatedHTML = templates.menuProduct(thisCart);
+
+      console.log('generatedHTML', generatedHTML);
+      /*create element using utilis.createElementFromHTML*/
+      thisCart.element = utils.createDOMFromHTML(generatedHTML);
+      
+      /*find menu container*/
+      const menuContainer = document.querySelector(selector.containerOf.menu);
+      
+      /*add element to menu*/
+      menuContainer.appendChild(thisProduct.element);
+    }
   }  
 
   const app = {
@@ -376,8 +418,4 @@
   };  
 
   app.init();
-<<<<<<< HEAD
 } 
-=======
-} 
->>>>>>> 241afd78e8fbbedbe1da6705c95f8c8dda979e60
