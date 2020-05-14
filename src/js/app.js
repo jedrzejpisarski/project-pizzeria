@@ -157,13 +157,13 @@
         thisProduct.element.classList.toggle('active');
 
         /* find all active products */
-        const activeProducts = document.querySelectorAll('.product.active');
+        const activeProducts = document.querySelectorAll('.product .active');
 
         /* START LOOP: for each active product */
         for(let product of activeProducts) {
 
           /* START: if the active product isn't the element of thisProduct */
-          if (product != thisProduct.element) {
+          if (product != thisProduct) {
           /* remove class active for the active product */
             product.classList.remove('active');
           /* END: if the active product isn't the element of thisProduct */
@@ -227,14 +227,6 @@
           const optionValue = thisProduct.data.params[param].options[option];
           const optionSelected = formData.hasOwnProperty(param) && formData[param].indexOf(option) > -1;
 
-          // 1. musimy znalezc obrazek
-          const image = document.querySelector('.' + param + '-'+ option);
-          if(image) {
-            if(optionSelected) image.classList.add('active');
-            else image.classList.remove('active');
-          }
-
-          // 2. musimy ustalic, czy powinien byc on widoczny i dac albo zabrac klase active
           if(optionValue) {
             console.log('Zmieniam ', option);
             if(optionSelected && !optionValue.default) {
@@ -260,12 +252,11 @@
 
     addToCart(){
       const thisProduct = this;
-      debugger;
+
       const cartProduct = {};
       cartProduct.name = thisProduct.data.name;
+      cartProduct.price = thisProduct.data.price;
       cartProduct.params = thisProduct.data.params;
-      cartProduct.price = thisProduct.price;
-      cartProduct.priceSingle = thisProduct.data.price;
       for(let param in cartProduct.params) {
         cartProduct.params[param].options = Object.keys(cartProduct.params[param].options).join(', ');
       }
@@ -344,7 +335,6 @@
       const thisCart = this;
 
       thisCart.products = [];
-      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
 
       thisCart.getElements(element);
       thisCart.initActions();
@@ -360,12 +350,6 @@
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
 
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
-
-      thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
-
-      for(let key of thisCart.renderTotalsKeys){
-        thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
-      }
     }
 
     initActions(){
@@ -374,7 +358,7 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function() {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
         console.log(thisCart.dom.wrapper);
-
+      
       });
 
       thisCart.dom.productList.addEventListener('update', function(){
@@ -399,28 +383,8 @@
 
       thisCart.products.push(new CartProduct(generatedDOM, menuProduct));
 
-      thisCart.update();
-    }
 
-    update(){
-      const thisCart = this;
-
-      thisCart.totalNumber = 0;
-      thisCart.subtotalPrice = 0;
-
-      for(let product of thisCart.products){
-        thisCart.subtotalPrice = thisCart.subtotalPrice + product.price;
-        thisCart.totalNumber = thisCart.totalNumber + product.amount;
-      }
-
-      thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
-
-      for(let key of thisCart.renderTotalsKeys){
-        for(let elem of thisCart.dom[key]){
-          elem.innerHTML = thisCart[key];
-        }
-      }
-
+      //update();
     }
 
     remove(cartProduct){
@@ -443,9 +407,9 @@
 
       thisCartProduct.id = menuProduct.id;
       thisCartProduct.name = menuProduct.name;
-      thisCartProduct.amount = menuProduct.amount;
-      thisCartProduct.priceSingle = menuProduct.priceSingle;
       thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amount;
+      thisCartProduct.priceSingle = menuProduct.priceSingle;
+      thisCartProduct.amount = select.cartProduct.amountWidget;
       thisCartProduct.params = JSON.parse(JSON.stringify(menuProduct.params));
 
       thisCartProduct.getElements(element);
@@ -465,16 +429,44 @@
 
       thisCartProduct.dom.wrapper = element;
       thisCartProduct.dom.amountWidget =  thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
-      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
+      thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(thisCartProduct.price);
       thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
       thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+
+      thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
+
+      for(let key of thisCart.renderTotalsKeys){
+        thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
+      }
 
     }
 
     initAmountWidget(){
       const thisCartProduct = this;
 
-      thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.wrapper);
+      thisCartProduct.amountWidget = new AmountWidget(thisCart.dom.wrapper);
+      thisCartProduct.addEventListener(thisCartProduct.processOrder());
+    }
+
+    update(){
+      const thisCart = this;
+
+      totalNumber = 0;
+      subtotalPrice = 0;
+
+      for(product of thisCart.products){
+        thisCart.subtotalPrice = thisCart.subtotalPrice + thisCartProduct.price;
+        thisCart.totalNumber = thisCart.totalNumber + thisCartProduct.amount;
+      }
+
+      thisCart.totalPrice = subtotalPrice + deliveryFee;
+
+      for(let key of thisCart.renderTotalsKeys){
+        for(let elem of thisCart.dom[key]){
+          elem.innerHTML = thisCart[key];
+        }
+      }
+
     }
 
     remove(){
@@ -491,9 +483,11 @@
     }
 
     initActions(){
-      const thisCartProduct = this;
+
       thisCartProduct.dom.edit.addEventListener('click', thisCartProduct.dom.edit);
-      thisCartProduct.dom.remove.addEventListener('click', thisCartProduct.remove());
+      thisCartProduct.dom.remove.addEventListener('click', remove());
+
+      console.log('remove', remove);
 
     }
   }
