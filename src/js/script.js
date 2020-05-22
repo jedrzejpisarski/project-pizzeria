@@ -367,6 +367,7 @@
       for(let key of thisCart.renderTotalsKeys){
         thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
       }
+      thisCart.formInputs = thisCart.formInputs.querySelector(select.cart[phone, address]);
     }
 
     initActions(){
@@ -393,7 +394,6 @@
 
     sendBooking(event) {
       event.preventDefault();
-
       
     }
 
@@ -437,6 +437,7 @@
         }
       }
 
+      thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
     }
 
     remove(cartProduct){
@@ -459,6 +460,7 @@
       const url = settings.db.url + '/' + settings.db.order;
 
       const payload = {
+        phone: 'test',
         address: 'test',
         totalPrice: thisCart.totalPrice,
       };
