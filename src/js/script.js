@@ -367,7 +367,9 @@
       for(let key of thisCart.renderTotalsKeys){
         thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
       }
-      thisCart.formInputs = thisCart.formInputs.querySelector(select.cart[phone, address]);
+
+      thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
+      thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
     }
 
     initActions(){
@@ -387,14 +389,11 @@
         thisCart.remove(event.detail.cartProduct);
       });
 
-      thisCart.dom.form.addEventListener('submit', this.sendBooking);
+      thisCart.dom.form.addEventListener('submit', function(event){
+        event.preventDefault();
         thisCart.sendOrder();
+      });
 
-    }
-
-    sendBooking(event) {
-      event.preventDefault();
-      
     }
 
     add(menuProduct){
@@ -460,10 +459,25 @@
       const url = settings.db.url + '/' + settings.db.order;
 
       const payload = {
-        phone: 'test',
-        address: 'test',
+        phone: thisCart.dom.phone.value,
+        address: thisCart.dom.address.value,
         totalPrice: thisCart.totalPrice,
+        products: []
       };
+
+
+      for(let product of thisCart.products) {
+        const paramsObj = {};
+        for(let param in product.params) {
+          paramsObj[param] = product.params[param].options;
+        }
+
+        payload.products.push({
+          name: product.name,
+          params: paramsObj,
+          amount: product.amount
+        });
+      }
 
       const options = {
         method: 'POST',
