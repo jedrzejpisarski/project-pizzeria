@@ -1,4 +1,4 @@
-import { templates, select } from './../settings.js';
+import { templates, select, settings } from './../settings.js';
 import AmountWidget from './AmountWidget.js';
 
 class Booking {
@@ -6,7 +6,26 @@ class Booking {
     const thisBooking = this;
     thisBooking.render(elem);
     thisBooking.initWidgets();
+    thisBooking.getData();
   }
+
+/*getData(){
+    const thisBooking = this;
+
+    const params = {
+
+    };
+
+    console.log('getData params', params);
+
+    const urls = {
+      booking:       settings.db.url + '/' + settings.db.booking + '?',
+      eventsCarrent: settings.db.url + '/' + settings.db.event + '?',
+      eventsRepeat:  settings.db.url + '/' + settings.db.event + '?',
+
+    };
+  } */
+
 
   render(element) {
     const thisBooking = this;
