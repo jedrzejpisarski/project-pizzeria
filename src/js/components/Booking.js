@@ -58,7 +58,7 @@ class Booking {
         return Promise.all([
           bookingsResponse.json(),
           eventsCurrentResponse.json(),
-         eventsRepeatResponse.json(),
+          eventsRepeatResponse.json(),
         ]);
       })
       .then(function([bookings, eventsCarrent, eventsRepeat]){
