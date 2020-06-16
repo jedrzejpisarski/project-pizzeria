@@ -1,8 +1,8 @@
-import { templates, select } from './../settings.js';
-import utils from '../utils.js';
+import { templates, select, settings } from './../settings.js';
+import { utils } from '../utils.js';
 import AmountWidget from './AmountWidget.js';
 import DatePicker from './DatePicker.js';
-
+import HourPicker from './HourPicker.js';
 
 class Booking {
   constructor (elem) {
@@ -17,7 +17,7 @@ class Booking {
 
     const startDateParam = settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.datePicker.minDate);
     const endDateParam = settings.db.dateEndParamKey + '=' + utils.dateToStr(thisBooking.datePicker.maxDate);
-     
+
     const params = {
       booking: [
         startDateParam,
@@ -37,9 +37,9 @@ class Booking {
     // console.log('getData params', params);
 
     const urls = {
-      booking:       settings.db.url + '/' + settings.db.booking 
+      booking:       settings.db.url + '/' + settings.db.booking
                                      + '?' + params.booking.join('&'),
-      eventsCarrent: settings.db.url + '/' + settings.db.event 
+      eventsCarrent: settings.db.url + '/' + settings.db.event
                                      + '?' + params.eventsCarrent.join('&'),
       eventsRepeat:  settings.db.url + '/' + settings.db.event
                                      + '?' + params.eventsRepeat.join('&'),
@@ -53,8 +53,8 @@ class Booking {
     ])
       .then(function(allResponses){
         const bookingsResponse = allResponses[0];
-        const eventsCurrentResponse = allResponses[0];
-        const eventsRepeatResponse = allResponses[0];
+        const eventsCurrentResponse = allResponses[1];
+        const eventsRepeatResponse = allResponses[2];
         return Promise.all([
           bookingsResponse.json(),
           eventsCurrentResponse.json(),
@@ -66,7 +66,7 @@ class Booking {
         console.log(eventsCarrent);
         console.log(eventsRepeat);
       });
-  } 
+  }
 
 
   render(element) {
@@ -81,6 +81,7 @@ class Booking {
     thisBooking.dom.hoursAmount = thisBooking.wrapper.querySelector(select.booking.hoursAmount);
 
     thisBooking.dom.datePicker = thisBooking.wrapper.querySelector(select.widgets.datePicker.wrapper);
+    thisBooking.dom.hourPicker = thisBooking.wrapper.querySelector(select.widgets.hourPicker.wrapper);
   }
 
   initWidgets() {
@@ -90,6 +91,7 @@ class Booking {
     thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
 
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
+    thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
   }
 }
 
