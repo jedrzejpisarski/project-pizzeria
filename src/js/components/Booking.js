@@ -190,8 +190,37 @@ class Booking {
 
     thisBooking.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
+      
     });
   }
+
+  sendBooked() {
+
+    const thisBooking = this;
+
+    const url = settings.db.url + '/' + settings.db.booking;
+
+    const payload = {
+      date: thisBooking.datePicker.value,
+      hour: utils.hourToNumber(thisBooking.hourPicker.value),
+    };
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch(url, options)
+      .then(function(response){
+        return response.json();
+      }).then(function(parsedResponse){
+        console.log('parsedResponse', parsedResponse);
+      });
+  } 
+
 }
 
 export default Booking;
