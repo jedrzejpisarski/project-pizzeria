@@ -112,7 +112,7 @@ class Booking {
         }
       }
     }
-    
+
     thisBooking.updateDOM();
   }
 
@@ -122,10 +122,10 @@ class Booking {
     if(typeof thisBooking.booked[date] == 'undefined'){
       thisBooking.booked[date] = {};
     }
-    
+
     const startHour = utils.hourToNumber(hour); //12
-    for(let hourBlock = startHour; hourBlock < 14; hourBlock += 0.5) { 
-      // console.log('loop', hourBlock); 
+    for(let hourBlock = startHour; hourBlock < 14; hourBlock += 0.5) {
+      // console.log('loop', hourBlock);
 
       if(typeof thisBooking.booked[date][hourBlock] == 'undefined'){
         thisBooking.booked[date][hourBlock] = [];
@@ -176,7 +176,12 @@ class Booking {
     thisBooking.dom.datePicker = thisBooking.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.wrapper.querySelector(select.widgets.hourPicker.wrapper);
 
-    thisBooking.dom.tables = thisBooking.wrapper.querySelectorAll(select.booking.tables);    
+    thisBooking.dom.tables = thisBooking.wrapper.querySelectorAll(select.booking.tables);
+    thisBooking.dom.form = thisBooking.wrapper.querySelector(select.booking.form);
+    thisBooking.dom.starters = thisBooking.wrapper.querySelectorAll(select.booking.starters);
+
+    thisBooking.dom.address = thisBooking.wrapper.querySelector(select.booking.address);
+    thisBooking.dom.phone = thisBooking.wrapper.querySelector(select.booking.phone);
   }
 
   initWidgets() {
@@ -190,20 +195,36 @@ class Booking {
 
     thisBooking.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
-      
+    });
+
+    thisBooking.dom.form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      thisBooking.sendBooked();
+      //return false;
     });
   }
 
   sendBooked() {
-
     const thisBooking = this;
 
     const url = settings.db.url + '/' + settings.db.booking;
 
     const payload = {
+      address: thisBooking.dom.address.value,
+      phone: thisBooking.dom.phone.value,
+      ppl: thisBooking.peopleAmount.value,
+      hours: thisBooking.hoursAmount.value,
       date: thisBooking.datePicker.value,
-      hour: utils.hourToNumber(thisBooking.hourPicker.value),
+      hour: thisBooking.hourPicker.value,
+      table: parseInt(thisBooking.table),
+      starters: [],
     };
+
+    for(const starter of thisBooking.dom.starters) {
+      if(starter.checked) {
+        payload.starters.push(starter.value);
+      }
+    }
 
     const options = {
       method: 'POST',
@@ -219,7 +240,8 @@ class Booking {
       }).then(function(parsedResponse){
         console.log('parsedResponse', parsedResponse);
       });
-  } 
+
+  }
 
 }
 
