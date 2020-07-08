@@ -104,6 +104,15 @@ const app = {
     thisApp.booking = new Booking(bookingElem);
   },
 
+  initCarousel() {
+    const elem = document.querySelector('.main-carousel');
+    new Flickity(elem, {
+      cellAlign: 'left',
+      contain: true,
+      prevNextButtons: false,
+    });
+  },
+
   init: function(){
     const thisApp = this;
     console.log('*** App starting ***');
@@ -115,6 +124,7 @@ const app = {
     thisApp.initData();
     thisApp.initCart();
     thisApp.initBooking();
+    thisApp.initCarousel();
   }
 
 };

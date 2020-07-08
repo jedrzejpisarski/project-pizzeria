@@ -1,0 +1,31 @@
+.main-carousel {
+  margin: 40px 0;
+}
+
+.carousel-cell {
+  width: 100%;
+  font-size: 20px;
+  display: flex;
+
+  .image-col {
+    width: 193px;
+    height: 193px;
+
+    img {
+      width: 193px;
+      height: 193px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+
+  .details-col {
+    padding-left: 40px;
+    font-size: 10.5pt;
+
+    h2 {
+      margin: 10px 0;
+      text-transform: uppercase;
+    }
+  }
+}
