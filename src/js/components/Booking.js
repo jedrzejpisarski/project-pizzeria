@@ -216,7 +216,7 @@ class Booking {
       hours: thisBooking.hoursAmount.value,
       date: thisBooking.datePicker.value,
       hour: thisBooking.hourPicker.value,
-      table: parseInt(thisBooking.table),
+      table: parseInt(thisBooking.tableId),
       starters: [],
     };
 
@@ -237,10 +237,9 @@ class Booking {
     fetch(url, options)
       .then(function(response){
         return response.json();
-      }).then(function(parsedResponse){
-        console.log('parsedResponse', parsedResponse);
+      }).then(function(){
+        thisBooking.makeBooked(payload.date, payload.hour, payload.hours, payload.table);
       });
-
   }
 
 }
