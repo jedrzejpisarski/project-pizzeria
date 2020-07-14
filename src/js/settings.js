@@ -2,6 +2,7 @@
 
 export const select = {
   templateOf: {
+    mainPage: '#template-main-page',
     menuProduct: '#template-menu-product',
     cartProduct: '#template-cart-product',
     bookingWidget: '#template-booking-widget',
