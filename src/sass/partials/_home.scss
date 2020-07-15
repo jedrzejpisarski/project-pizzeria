@@ -16,16 +16,26 @@
       height: 193px;
       object-fit: cover;
       border-radius: 10px;
+      
     }
   }
-
+.btn{  
+  position: absolute;
+  
+  h1 {
+    
+    position: relative;
+  }
   .details-col {
     padding-left: 40px;
     font-size: 10.5pt;
+
+   
 
     h2 {
       margin: 10px 0;
       text-transform: uppercase;
     }
   }
+  
 }
