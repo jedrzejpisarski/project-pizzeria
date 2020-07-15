@@ -13,6 +13,32 @@ class Booking {
     thisBooking.initTables();
   }
 
+  limitHours() {
+    const thisBooking = this;
+    let limit = 0.5;
+    const hour = thisBooking.hourPicker.value;
+    const day = thisBooking.datePicker.value;
+
+    for(const hourBlock = hour; hourBlock < settings.hours.close; hourBlock + 0.5) {
+      if(!thisBooking.booked[day]) {
+        limit = settings.hours.close - thisBooking.hourPicker.value;
+        break;
+      }
+      else {
+        if(!thisBooking.booked[day][hour]) limit += 0.5;
+        else {
+          if(thisBooking.booked[day][hour].includes(thisBooking.tableId)) {
+            break;
+          }
+          else limit += 0.5;
+        }
+      }
+    }
+
+    thisBooking.hoursAmount.max = limit;
+    thisBooking.hoursAmount.value = 1;
+  }
+
   initTables() {
     const thisBooking = this;
     for(let table of thisBooking.dom.tables) {
@@ -27,6 +53,7 @@ class Booking {
           const activeTable = thisBooking.wrapper.querySelector('.table-selected');
           if(activeTable) activeTable.classList.remove('table-selected');
           table.classList.add('table-selected');
+          thisBooking.limitHours();
         }
       });
     }
@@ -99,7 +126,7 @@ class Booking {
     }
 
     for(let item of bookings){
-      thisBooking.makeBooked(item.date, item.hour, item.duration, item.table);
+      thisBooking.makeBooked(item.date, item.hour, item.hours, item.table);
     }
 
     const minDate = thisBooking.datePicker.minDate;
@@ -123,8 +150,8 @@ class Booking {
       thisBooking.booked[date] = {};
     }
 
-    const startHour = utils.hourToNumber(hour); //12
-    for(let hourBlock = startHour; hourBlock < 14; hourBlock += 0.5) {
+    const startHour = utils.hourToNumber(hour); //15  18
+    for(let hourBlock = startHour; hourBlock < startHour + duration; hourBlock += 0.5) {
       // console.log('loop', hourBlock);
 
       if(typeof thisBooking.booked[date][hourBlock] == 'undefined'){
@@ -240,6 +267,8 @@ class Booking {
       }).then(function(){
         thisBooking.makeBooked(payload.date, payload.hour, payload.hours, payload.table);
       });
+
+
   }
 
 }
