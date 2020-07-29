@@ -2,7 +2,7 @@ import { settings, select } from './../settings.js';
 import BaseWidget from './BaseWidget.js';
 
 class AmountWidget extends BaseWidget {
-  constructor(element){
+  constructor(element, accomulation = 1){
     super(element, settings.amountWidget.defaultValue);
 
     const thisWidget = this;
@@ -12,6 +12,7 @@ class AmountWidget extends BaseWidget {
     thisWidget.initActions();
     thisWidget.min = settings.amountWidget.defaultMin;
     thisWidget.max = settings.amountWidget.defaultMax;
+    thisWidget.accomulation = accomulation;
 
     //console.log('AmountWidget:', thisWidget);
     //console.log('constructor arguments:', element);
@@ -47,12 +48,12 @@ class AmountWidget extends BaseWidget {
 
     thisWidget.dom.linkDecrease.addEventListener('click', function(e) {
       e.preventDefault();
-      thisWidget.setValue(thisWidget.value - 1);
+      thisWidget.setValue(thisWidget.value - thisWidget.accomulation);
     });
 
     thisWidget.dom.linkIncrease.addEventListener('click', function(e) {
       e.preventDefault();
-      thisWidget.setValue(thisWidget.value + 1);
+      thisWidget.setValue(thisWidget.value + thisWidget.accomulation);
     });
   }
 }

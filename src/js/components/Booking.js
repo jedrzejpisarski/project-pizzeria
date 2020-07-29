@@ -15,19 +15,20 @@ class Booking {
 
   limitHours() {
     const thisBooking = this;
-    let limit = 0.5;
-    const hour = thisBooking.hourPicker.value;
+    let limit = 0;
+    const hour = utils.hourToNumber(thisBooking.hourPicker.value); 16
     const day = thisBooking.datePicker.value;
 
-    for(const hourBlock = hour; hourBlock < settings.hours.close; hourBlock + 0.5) {
+    //16
+    for(let hourBlock = hour; hourBlock < settings.hours.close; hourBlock += 0.5) {
       if(!thisBooking.booked[day]) {
         limit = settings.hours.close - thisBooking.hourPicker.value;
         break;
       }
       else {
-        if(!thisBooking.booked[day][hour]) limit += 0.5;
+        if(!thisBooking.booked[day][hourBlock]) limit += 0.5;
         else {
-          if(thisBooking.booked[day][hour].includes(thisBooking.tableId)) {
+          if(thisBooking.booked[day][hourBlock].includes(thisBooking.tableId)) {
             break;
           }
           else limit += 0.5;
@@ -215,7 +216,7 @@ class Booking {
     const thisBooking = this;
 
     thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
-    thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
+    thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount, 0.5);
 
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
