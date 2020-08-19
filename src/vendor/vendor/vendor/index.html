@@ -6,7 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Pizzeria</title>
   <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -25,7 +24,7 @@
         </div>
         <div id="cart" class="cart">
           <div class="cart__summary">
-            <span class="cart__total-number">5</span>
+            <span class="cart__total-number">0</span>
             <span class="cart__total-price">Total price: $<strong>0</strong></span>
             <i class="fas fa-chevron-down"></i>
             <i class="fas fa-shopping-cart cart__icon"></i>
@@ -151,7 +150,7 @@
           {{#each params}}
             <li>
               <span class="cart__product-details-label">{{ label }}</span>
-              <span>{{#joinValues options}}, {{/joinValues}}</span>
+              <span>{{ options }}</span>
             </li>
           {{/each}}
         </ul>
@@ -243,7 +242,6 @@
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="js/app.js" type="module"></script>
 </body>
 </html>
